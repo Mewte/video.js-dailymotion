@@ -40,7 +40,12 @@ videojs.Dailymotion = videojs.MediaTechController.extend({
             if (!this.player_.options().dmControls) {
                 // Set the Dailymotion poster only if none is specified
                 if (typeof this.player_.poster() == 'undefined') {
-                    this.player_.poster('https://api.dailymotion.com/video/' + this.videoId + '?fields=url');
+					try{
+						this.player_.poster('https://api.dailymotion.com/video/' + this.videoId + '?fields=url');
+					}
+					catch (e){
+						//this.tech is undefined error
+					}
                 }
 
                 // Cover the entire iframe to have the same poster than Dailymotion
