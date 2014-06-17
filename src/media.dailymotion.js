@@ -77,7 +77,7 @@ videojs.Dailymotion = videojs.MediaTechController.extend({
             id: this.id_,
             autoplay: (this.player_.options().autoplay) ? 1 : 0,
             chromeless: (this.player_.options().dmControls) ? 0 : 1,
-            html: 1,
+            html: 0, //flash has less issues than the html5 version
             info: 1,
             logo: 1,
             controls: 'html',
@@ -127,7 +127,8 @@ videojs.Dailymotion.prototype.params = [];
 
 videojs.Dailymotion.prototype.dispose = function () {
     if (this.el_) {
-        this.el_.parentNode.removeChild(this.el_);
+        var player_ele = document.getElementById(this.player_.id());
+		player_ele.removeChild(player_ele.firstChild); 
     }
 
     /*if (this.dmPlayer) {
@@ -220,7 +221,7 @@ videojs.Dailymotion.prototype.volume = function () {
 
 videojs.Dailymotion.prototype.setVolume = function (percentAsDecimal) {
     if (percentAsDecimal && percentAsDecimal != this.volumeVal) {
-        this.dmPlayer.volume = percentAsDecimal;
+        this.dmPlayer.setVolume(percentAsDecimal);
         this.volumeVal = percentAsDecimal;
         this.player_.trigger('volumechange');
     }
@@ -230,7 +231,7 @@ videojs.Dailymotion.prototype.muted = function () {
     return this.dmPlayer.muted;
 };
 videojs.Dailymotion.prototype.setMuted = function (muted) {
-    this.dmPlayer.muted = muted;
+    this.dmPlayer.setMuted(muted)
 
     var self = this;
     setTimeout(function () {
